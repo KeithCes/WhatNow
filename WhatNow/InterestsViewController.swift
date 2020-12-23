@@ -20,6 +20,31 @@ class InterestsViewController: UIViewController {
     
     var defaultPreferences = DefaultPreferencesUser.defaultPreferences
     
+    var values: NSDictionary = [:]
+    var curVideoGame: [String:Any] = [:]
+    var totalIdeasSeen: Double! = nil
+    
+    var genre: String! = nil
+    var storesGenres: [String:Int]! = nil
+    var storedGenre: Int! = nil
+    
+    var rand: Int! = nil
+    
+    var curUserPreferences =
+    [
+        "totalIdeasSeen": 1,
+        "difficulty": 5,
+        "popularity": 5,
+        "multiplayer": 5,
+        "competitive": 5,
+        "genres":
+        [
+            "adventure": 0,
+            "action": 0,
+            "horror": 0,
+        ],
+    ] as [String : Any]
+    
     override func viewDidLoad() {
         
         ref = Database.database().reference()
@@ -33,7 +58,22 @@ class InterestsViewController: UIViewController {
         
         videoGames = items
         
-        interestsImage.image = UIImage(named: videoGames[0]["imageName"] as! String)
+        ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            if value == nil {
+                self.ref.child("42069").child("preference").setValue(self.defaultPreferences)
+            }
+            self.rand = Int.random(in: 0..<self.videoGames.count)
+            self.interestsImage.image = UIImage(named: self.videoGames[self.rand]["imageName"] as! String)
+            self.ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.values = snapshot.value as! NSDictionary
+                
+                self.setVideoGameValues()
+            })
+        })
+        
+        
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = .right
@@ -42,13 +82,6 @@ class InterestsViewController: UIViewController {
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeLeft.direction = .left
         self.view.addGestureRecognizer(swipeLeft)
-        
-        ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            if value == nil {
-                self.ref.child("42069").child("preference").setValue(self.defaultPreferences)
-            }
-        })
     }
     
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -60,27 +93,30 @@ class InterestsViewController: UIViewController {
             switch swipeGesture.direction {
             case .right:
                 print("Swiped right")
-                let rand = Int.random(in: 0..<videoGames.count)
+                
+                rand = Int.random(in: 0..<videoGames.count)
                 interestsImage.image = UIImage(named: self.videoGames[rand]["imageName"] as! String)
                 
                 ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
                     
-                    let values = snapshot.value as! NSDictionary
-                    let curVideoGame = self.videoGames[rand]
-                    let totalIdeasSeen: Double! = (values["totalIdeasSeen"] as? Double)! + 1
+//                    self.ref.child("42069").child("preference").child("genres").updateChildValues([self.genre!: self.storedGenre + 1])
+//
                     
-                    let genre: String! = curVideoGame["genre"] as? String
-                    let storesGenres: [String:Int]! = values["genres"] as? [String:Int]
-                    let storedGenre: Int! = storesGenres[genre]
+                    DispatchQueue.main.async {
                     
-                    self.recalculateValuesSendToDatabase(totalIdeasSeen: totalIdeasSeen, storedValue: values["difficulty"] as? Double ?? 5, newValue: curVideoGame["difficulty"] as? Double ?? 5, catagory: "difficulty")
-                    self.recalculateValuesSendToDatabase(totalIdeasSeen: totalIdeasSeen, storedValue: values["multiplayer"] as? Double ?? 5, newValue: curVideoGame["multiplayer"] as? Double ?? 5, catagory: "multiplayer")
-                    self.recalculateValuesSendToDatabase(totalIdeasSeen: totalIdeasSeen, storedValue: values["popularity"] as? Double ?? 5, newValue: curVideoGame["popularity"] as? Double ?? 5, catagory: "popularity")
-                    self.recalculateValuesSendToDatabase(totalIdeasSeen: totalIdeasSeen, storedValue: values["competitive"] as? Double ?? 5, newValue: curVideoGame["competitive"] as? Double ?? 5, catagory: "competitive")
+                        self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
+                        
+                        self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
+                        self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
+                        self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
+                        self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
+                            
+                        self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
+                    }
                     
-                    self.ref.child("42069").child("preference").child("genres").updateChildValues([genre!: storedGenre + 1])
+                    self.values = snapshot.value as! NSDictionary
                     
-                    self.ref.child("42069").child("preference").updateChildValues(["totalIdeasSeen": totalIdeasSeen!])
+                    self.setVideoGameValues()
                 })
             case .left:
                 print("Swiped left")
@@ -92,8 +128,17 @@ class InterestsViewController: UIViewController {
         }
     }
     
-    func recalculateValuesSendToDatabase(totalIdeasSeen: Double, storedValue: Double, newValue: Double, catagory: String) {
+    func recalculateValuesSendToDatabase(totalIdeasSeen: Double, storedValue: Double, newValue: Double) -> Double {
         let recalculatedValue = ((newValue - storedValue) / totalIdeasSeen) + storedValue
-        self.ref.child("42069").child("preference").updateChildValues([catagory: recalculatedValue])
+        return recalculatedValue
+    }
+    
+    func setVideoGameValues() {
+        self.curVideoGame = self.videoGames[self.rand]
+        self.totalIdeasSeen = (self.values["totalIdeasSeen"] as? Double)! + 1
+        
+        self.genre = self.curVideoGame["genre"] as? String
+        self.storesGenres = self.values["genres"] as? [String:Int]
+        self.storedGenre = self.storesGenres[self.genre]
     }
 }

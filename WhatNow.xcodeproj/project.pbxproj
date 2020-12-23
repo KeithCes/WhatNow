@@ -20,6 +20,7 @@
 		53FDE7842592841500A8384E /* InterestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE7832592841500A8384E /* InterestsViewController.swift */; };
 		53FDE7892592864A00A8384E /* VideoGames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE7882592864A00A8384E /* VideoGames.swift */; };
 		53FDE78E25928D5500A8384E /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE78D25928D5500A8384E /* UserData.swift */; };
+		53FDE7A92592AA7B00A8384E /* DefaultPreferencesUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */; };
 		9F07E7152CE40D03B48AF3AF /* Pods_WhatNow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721E45269E6505B6ECFBD6A0 /* Pods_WhatNow.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		53FDE7832592841500A8384E /* InterestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsViewController.swift; sourceTree = "<group>"; };
 		53FDE7882592864A00A8384E /* VideoGames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoGames.swift; sourceTree = "<group>"; };
 		53FDE78D25928D5500A8384E /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUser.swift; sourceTree = "<group>"; };
 		5F4C2DC153246410F0572A83 /* Pods-WhatNow-WhatNowUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNow-WhatNowUITests.debug.xcconfig"; path = "Target Support Files/Pods-WhatNow-WhatNowUITests/Pods-WhatNow-WhatNowUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		69B06EDD8A9EF6FEF6AEC0CD /* Pods-WhatNow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNow.release.xcconfig"; path = "Target Support Files/Pods-WhatNow/Pods-WhatNow.release.xcconfig"; sourceTree = "<group>"; };
 		721E45269E6505B6ECFBD6A0 /* Pods_WhatNow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatNow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 				53FDE74F25927E9C00A8384E /* GoogleService-Info.plist */,
 				53FDE71425927D7F00A8384E /* AppDelegate.swift */,
 				53FDE7832592841500A8384E /* InterestsViewController.swift */,
+				53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */,
 				53FDE78D25928D5500A8384E /* UserData.swift */,
 				53FDE7882592864A00A8384E /* VideoGames.swift */,
 				53FDE71625927D7F00A8384E /* SceneDelegate.swift */,
@@ -419,6 +422,7 @@
 				53FDE71525927D7F00A8384E /* AppDelegate.swift in Sources */,
 				53FDE7842592841500A8384E /* InterestsViewController.swift in Sources */,
 				53FDE71725927D7F00A8384E /* SceneDelegate.swift in Sources */,
+				53FDE7A92592AA7B00A8384E /* DefaultPreferencesUser.swift in Sources */,
 				53FDE78E25928D5500A8384E /* UserData.swift in Sources */,
 				53FDE7892592864A00A8384E /* VideoGames.swift in Sources */,
 			);

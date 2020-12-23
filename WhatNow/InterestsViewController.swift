@@ -26,7 +26,10 @@ class InterestsViewController: UIViewController {
         
         //TODO: connect to firebase and pull ARRAY of STRING DICT of all video games, delete test values
         
-        let items = [["imageName": "enemy.png", "title": "The Witcher 3", "genre": "adventure", "multiplayer": 1.0, "difficulty": 8.0, "competitive": 1.0, "popularity": 9.0], ["imageName": "jolie.png", "title": "Minecraft", "genre": "adventure", "multiplayer": 5.0, "difficulty": 3.0, "competitive": 1.0, "popularity": 9.0], ["imageName": "icon.png", "title": "Amnesia: The Dark Descent", "genre": "horror", "multiplayer": 1.0, "difficulty": 4.0, "competitive": 2.0, "popularity": 7.0]]
+        let items = [
+            ["imageName": "enemy.png", "title": "The Witcher 3", "genre": "adventure", "multiplayer": 1.0, "difficulty": 8.0, "competitive": 1.0, "popularity": 9.0],
+            ["imageName": "jolie.png", "title": "Minecraft", "genre": "adventure", "multiplayer": 5.0, "difficulty": 3.0, "competitive": 1.0, "popularity": 9.0],
+            ["imageName": "icon.png", "title": "Amnesia: The Dark Descent", "genre": "horror", "multiplayer": 1.0, "difficulty": 4.0, "competitive": 2.0, "popularity": 7.0]]
         
         videoGames = items
         

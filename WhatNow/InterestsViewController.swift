@@ -99,25 +99,26 @@ class InterestsViewController: UIViewController {
                 
                 ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
                     
-//                    self.ref.child("42069").child("preference").child("genres").updateChildValues([self.genre!: self.storedGenre + 1])
-//
-                    
-                    DispatchQueue.main.async {
-                    
-                        self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
-                        
-                        self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
-                        self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
-                        self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
-                        self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
-                            
-                        self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
-                    }
+                    self.setVideoGameValues()
                     
                     self.values = snapshot.value as! NSDictionary
-                    
-                    self.setVideoGameValues()
                 })
+                
+                self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
+                    
+                self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
+                self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
+                self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
+                self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
+                        
+                let curGenre: String! = self.curVideoGame["genre"] as? String
+                var storedGenres: [String:Int]! = self.values["genres"] as? [String:Int]
+                storedGenres[curGenre] = storedGenres[curGenre]! + 1
+                self.curUserPreferences["genres"] = storedGenres
+                    
+                    
+                self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
+                
             case .left:
                 print("Swiped left")
                 let rand = Int.random(in: 0..<videoGames.count)

@@ -151,24 +151,17 @@
 		53FDE71325927D7F00A8384E /* WhatNow */ = {
 			isa = PBXGroup;
 			children = (
-				53FDE74F25927E9C00A8384E /* GoogleService-Info.plist */,
-				53FDE71425927D7F00A8384E /* AppDelegate.swift */,
-				53FDE7832592841500A8384E /* InterestsViewController.swift */,
-				53FDE7CD2599982B00A8384E /* GeneralConstants.swift */,
+				53FDE960259A9F7600A8384E /* Structs */,
+				53FDE95F259A9F4D00A8384E /* Tabbar */,
+				53FDE95E259A9F2A00A8384E /* Onboarding */,
 				53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */,
-				53FDE78D25928D5500A8384E /* UserData.swift */,
-				53FDE7882592864A00A8384E /* VideoGames.swift */,
-				53FDE71625927D7F00A8384E /* SceneDelegate.swift */,
 				53FDE71A25927D7F00A8384E /* Main.storyboard */,
-				53FDE954259A96E900A8384E /* IdeasViewController.swift */,
-				53FDE94F259A96A000A8384E /* SettingsViewController.swift */,
-				53FDE959259A977500A8384E /* LoginViewController.swift */,
-				53FDE94A259A933D00A8384E /* TabbarViewController.swift */,
-				53FDE907259A64D200A8384E /* PreAuthViewController.swift */,
-				53FDE93A259A80D900A8384E /* CreateAccountViewController.swift */,
 				53FDE71D25927D8200A8384E /* Assets.xcassets */,
+				53FDE71425927D7F00A8384E /* AppDelegate.swift */,
+				53FDE71625927D7F00A8384E /* SceneDelegate.swift */,
 				53FDE71F25927D8200A8384E /* LaunchScreen.storyboard */,
 				53FDE72225927D8200A8384E /* Info.plist */,
+				53FDE74F25927E9C00A8384E /* GoogleService-Info.plist */,
 			);
 			path = WhatNow;
 			sourceTree = "<group>";
@@ -189,6 +182,37 @@
 				53FDE73825927D8200A8384E /* Info.plist */,
 			);
 			path = WhatNowUITests;
+			sourceTree = "<group>";
+		};
+		53FDE95E259A9F2A00A8384E /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				53FDE93A259A80D900A8384E /* CreateAccountViewController.swift */,
+				53FDE959259A977500A8384E /* LoginViewController.swift */,
+				53FDE907259A64D200A8384E /* PreAuthViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		53FDE95F259A9F4D00A8384E /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				53FDE94A259A933D00A8384E /* TabbarViewController.swift */,
+				53FDE954259A96E900A8384E /* IdeasViewController.swift */,
+				53FDE7832592841500A8384E /* InterestsViewController.swift */,
+				53FDE94F259A96A000A8384E /* SettingsViewController.swift */,
+			);
+			path = Tabbar;
+			sourceTree = "<group>";
+		};
+		53FDE960259A9F7600A8384E /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				53FDE7882592864A00A8384E /* VideoGames.swift */,
+				53FDE78D25928D5500A8384E /* UserData.swift */,
+				53FDE7CD2599982B00A8384E /* GeneralConstants.swift */,
+			);
+			path = Structs;
 			sourceTree = "<group>";
 		};
 		78CACC5EB6C660D738232570 /* Frameworks */ = {

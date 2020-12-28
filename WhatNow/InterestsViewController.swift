@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import Firebase
 import FirebaseDatabase
+import FirebaseStorage
 
 class InterestsViewController: UIViewController {
     
@@ -28,47 +29,39 @@ class InterestsViewController: UIViewController {
     var storesGenres: [String:Int]! = nil
     var storedGenre: Int! = nil
     
-    var rand: Int! = nil
-    
-    var curUserPreferences =
-    [
-        "totalIdeasSeen": 1,
-        "difficulty": 5,
-        "popularity": 5,
-        "multiplayer": 5,
-        "competitive": 5,
-        "genres":
-        [
-            "adventure": 0,
-            "action": 0,
-            "horror": 0,
-        ],
-    ] as [String : Any]
+    var curUserPreferences = DefaultPreferencesUser.defaultPreferences
     
     override func viewDidLoad() {
         
         ref = Database.database().reference()
         
-        //TODO: connect to firebase and pull ARRAY of STRING DICT of all video games, delete test values
+        //gets list of all video games from backend
+        ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+        })
         
-        let items = [
-            ["imageName": "enemy.png", "title": "The Witcher 3", "genre": "adventure", "multiplayer": 1.0, "difficulty": 8.0, "competitive": 1.0, "popularity": 9.0],
-            ["imageName": "jolie.png", "title": "Minecraft", "genre": "adventure", "multiplayer": 5.0, "difficulty": 3.0, "competitive": 1.0, "popularity": 9.0],
-            ["imageName": "icon.png", "title": "Amnesia: The Dark Descent", "genre": "horror", "multiplayer": 1.0, "difficulty": 4.0, "competitive": 2.0, "popularity": 7.0]]
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
         
-        videoGames = items
-        
+        //gets initial user preferences
         ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             if value == nil {
                 self.ref.child("42069").child("preference").setValue(self.defaultPreferences)
             }
-            self.rand = Int.random(in: 0..<self.videoGames.count)
-            self.interestsImage.image = UIImage(named: self.videoGames[self.rand]["imageName"] as! String)
+            
+            //gets image from backend and sets
+            let imageName = self.curVideoGame["imageName"] as! String
+            let imageRef = storageRef.child("images/videogames/" + imageName)
+            imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
+                let image = UIImage(data: data!)
+                self.interestsImage.image = image
+            }
+            
+            //sets values to whats game has been pulled
             self.ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-                
                 self.values = snapshot.value as! NSDictionary
-                
                 self.setVideoGameValues()
             })
         })
@@ -95,15 +88,30 @@ class InterestsViewController: UIViewController {
                 print("Swiped right")
                 
                 //TODO: add weighted randomness; items more related to user preferences get picked more often
-                rand = Int.random(in: 0..<videoGames.count)
-                interestsImage.image = UIImage(named: self.videoGames[rand]["imageName"] as! String)
                 
+                let storage = Storage.storage()
+                let storageRef = storage.reference()
+                
+                //gets next image from backend and sets
+                let imageName = self.curVideoGame["imageName"] as! String
+                let imageRef = storageRef.child("images/videogames/" + imageName)
+                imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
+                    let image = UIImage(data: data!)
+                    self.interestsImage.image = image
+                }
+                
+                //gets list of all video games from backend
+                ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+                    let value = snapshot.value as? NSDictionary
+                    self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                })
+                
+                //sets values to whats game has been pulled
                 ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-                    
                     self.setVideoGameValues()
-                    
                     self.values = snapshot.value as! NSDictionary
                 })
+                
                 
                 self.setUserPreferencesVideoGames()
                 
@@ -117,13 +125,14 @@ class InterestsViewController: UIViewController {
         }
     }
     
+    //averages weighted the new values
     func recalculateValuesSendToDatabase(totalIdeasSeen: Double, storedValue: Double, newValue: Double) -> Double {
         let recalculatedValue = ((newValue - storedValue) / totalIdeasSeen) + storedValue
         return recalculatedValue
     }
     
+    //sets the globals to be the values that are pulled
     func setVideoGameValues() {
-        self.curVideoGame = self.videoGames[self.rand]
         self.totalIdeasSeen = (self.values["totalIdeasSeen"] as? Double)! + 1
         
         self.genre = self.curVideoGame["genre"] as? String
@@ -131,6 +140,7 @@ class InterestsViewController: UIViewController {
         self.storedGenre = self.storesGenres[self.genre]
     }
     
+    //calls recalculateValuesSendToDatabase() and sends out the result
     func setUserPreferencesVideoGames() {
         self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
             

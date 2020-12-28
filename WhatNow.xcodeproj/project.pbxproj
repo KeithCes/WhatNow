@@ -28,6 +28,7 @@
 		53FDE950259A96A000A8384E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE94F259A96A000A8384E /* SettingsViewController.swift */; };
 		53FDE955259A96E900A8384E /* IdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE954259A96E900A8384E /* IdeasViewController.swift */; };
 		53FDE95A259A977500A8384E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE959259A977500A8384E /* LoginViewController.swift */; };
+		53FDE965259AA12F00A8384E /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 53FDE964259AA12F00A8384E /* FontAwesome.otf */; };
 		9F07E7152CE40D03B48AF3AF /* Pods_WhatNow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721E45269E6505B6ECFBD6A0 /* Pods_WhatNow.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		53FDE94F259A96A000A8384E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		53FDE954259A96E900A8384E /* IdeasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeasViewController.swift; sourceTree = "<group>"; };
 		53FDE959259A977500A8384E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		53FDE964259AA12F00A8384E /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
 		5F4C2DC153246410F0572A83 /* Pods-WhatNow-WhatNowUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNow-WhatNowUITests.debug.xcconfig"; path = "Target Support Files/Pods-WhatNow-WhatNowUITests/Pods-WhatNow-WhatNowUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		69B06EDD8A9EF6FEF6AEC0CD /* Pods-WhatNow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNow.release.xcconfig"; path = "Target Support Files/Pods-WhatNow/Pods-WhatNow.release.xcconfig"; sourceTree = "<group>"; };
 		721E45269E6505B6ECFBD6A0 /* Pods_WhatNow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatNow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +163,7 @@
 				53FDE71625927D7F00A8384E /* SceneDelegate.swift */,
 				53FDE71F25927D8200A8384E /* LaunchScreen.storyboard */,
 				53FDE72225927D8200A8384E /* Info.plist */,
+				53FDE964259AA12F00A8384E /* FontAwesome.otf */,
 				53FDE74F25927E9C00A8384E /* GoogleService-Info.plist */,
 			);
 			path = WhatNow;
@@ -336,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53FDE72125927D8200A8384E /* LaunchScreen.storyboard in Resources */,
+				53FDE965259AA12F00A8384E /* FontAwesome.otf in Resources */,
 				53FDE75025927E9C00A8384E /* GoogleService-Info.plist in Resources */,
 				53FDE71E25927D8200A8384E /* Assets.xcassets in Resources */,
 				53FDE71C25927D7F00A8384E /* Main.storyboard in Resources */,

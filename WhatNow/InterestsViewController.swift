@@ -94,6 +94,7 @@ class InterestsViewController: UIViewController {
             case .right:
                 print("Swiped right")
                 
+                //TODO: add weighted randomness; items more related to user preferences get picked more often
                 rand = Int.random(in: 0..<videoGames.count)
                 interestsImage.image = UIImage(named: self.videoGames[rand]["imageName"] as! String)
                 
@@ -104,20 +105,7 @@ class InterestsViewController: UIViewController {
                     self.values = snapshot.value as! NSDictionary
                 })
                 
-                self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
-                    
-                self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
-                self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
-                self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
-                self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
-                        
-                let curGenre: String! = self.curVideoGame["genre"] as? String
-                var storedGenres: [String:Int]! = self.values["genres"] as? [String:Int]
-                storedGenres[curGenre] = storedGenres[curGenre]! + 1
-                self.curUserPreferences["genres"] = storedGenres
-                    
-                    
-                self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
+                self.setUserPreferencesVideoGames()
                 
             case .left:
                 print("Swiped left")
@@ -141,5 +129,22 @@ class InterestsViewController: UIViewController {
         self.genre = self.curVideoGame["genre"] as? String
         self.storesGenres = self.values["genres"] as? [String:Int]
         self.storedGenre = self.storesGenres[self.genre]
+    }
+    
+    func setUserPreferencesVideoGames() {
+        self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
+            
+        self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
+        self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
+        self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
+        self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
+                
+        let curGenre: String! = self.curVideoGame["genre"] as? String
+        var storedGenres: [String:Int]! = self.values["genres"] as? [String:Int]
+        storedGenres[curGenre] = storedGenres[curGenre]! + 1
+        self.curUserPreferences["genres"] = storedGenres
+            
+            
+        self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
     }
 }

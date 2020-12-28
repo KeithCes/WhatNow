@@ -8,7 +8,13 @@ target 'WhatNow' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'FirebaseUI'
+  pod 'FirebaseUI/Auth'
+  pod 'FirebaseUI/Phone'
+  pod 'FirebaseUI/Google'
 
+  pod 'SkyFloatingLabelTextField'
+  
 
   target 'WhatNowTests' do
     inherit! :search_paths

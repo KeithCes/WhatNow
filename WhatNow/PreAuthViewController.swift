@@ -21,7 +21,7 @@ class PreAuthViewController: UIViewController {
         //logs user in if they are authed already (remember me)
         if Auth.auth().currentUser != nil {
             let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            let interestsViewController  = mainStoryboard.instantiateViewController(withIdentifier: "InterestsViewController") as! InterestsViewController
+            let interestsViewController  = mainStoryboard.instantiateViewController(withIdentifier: "TabbarViewController") as! TabbarViewController
             interestsViewController.modalPresentationStyle = .fullScreen
             self.present(interestsViewController, animated: true, completion: nil)
         }
@@ -36,7 +36,7 @@ class PreAuthViewController: UIViewController {
     
     @IBAction func loginPressed(_ sender: Any) {
         let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        let interestsViewController  = mainStoryboard.instantiateViewController(withIdentifier: "InterestsViewController") as! InterestsViewController
+        let interestsViewController  = mainStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         interestsViewController.modalPresentationStyle = .fullScreen
         self.present(interestsViewController, animated: true, completion: nil)
     }

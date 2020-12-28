@@ -9,13 +9,13 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Interests View Controller-->
+        <!--Interests-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="InterestsViewController" id="BYZ-38-t0r" customClass="InterestsViewController" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zE9-c1-q7F">
@@ -30,12 +30,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zE9-c1-q7F" secondAttribute="trailing" constant="87" id="sCE-5w-M8F"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Interests" image="scribble.variable" catalog="system" id="gZK-g9-Ua1"/>
                     <connections>
                         <outlet property="interestsImage" destination="zE9-c1-q7F" id="NnF-DS-yhF"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3397" y="483"/>
+            <point key="canvasLocation" x="3333" y="419"/>
         </scene>
         <!--Pre Auth View Controller-->
         <scene sceneID="siw-EV-rC9">
@@ -74,6 +75,34 @@
             </objects>
             <point key="canvasLocation" x="-399" y="70"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="wRZ-N4-d4J">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="rhA-Vg-Nj6" customClass="LoginViewController" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iu5-bF-8wG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V29-Zu-0eh">
+                                <rect key="frame" x="50" y="94" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backPressed:" destination="rhA-Vg-Nj6" eventType="touchUpInside" id="IaL-u9-aou"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="xFO-t0-YCy"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="V29-Zu-0eh" firstAttribute="leading" secondItem="xFO-t0-YCy" secondAttribute="leading" constant="50" id="LoZ-bm-EJP"/>
+                            <constraint firstItem="V29-Zu-0eh" firstAttribute="top" secondItem="xFO-t0-YCy" secondAttribute="top" constant="50" id="VSE-vN-2YD"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XUm-qp-0GP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="368" y="-236"/>
+        </scene>
         <!--Create Account View Controller-->
         <scene sceneID="KPt-Ma-ma1">
             <objects>
@@ -81,57 +110,84 @@
                     <view key="view" contentMode="scaleToFill" id="Ca0-nT-ANB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KRA-FV-SHu">
+                                <rect key="frame" x="50" y="94" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backPressed:" destination="yIK-2C-6JF" eventType="touchUpInside" id="Omi-k3-ECI"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="frr-93-mDu"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KRA-FV-SHu" firstAttribute="leading" secondItem="frr-93-mDu" secondAttribute="leading" constant="50" id="IWw-GB-7Ab"/>
+                            <constraint firstItem="KRA-FV-SHu" firstAttribute="top" secondItem="frr-93-mDu" secondAttribute="top" constant="50" id="z8T-2T-HVi"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JG4-c7-ifQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="374" y="70"/>
+            <point key="canvasLocation" x="341" y="419"/>
         </scene>
-        <!--Item 2-->
+        <!--Settings-->
         <scene sceneID="tob-Ek-Y6d">
             <objects>
-                <viewController id="6oB-P4-Df1" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" id="6oB-P4-Df1" customClass="SettingsViewController" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JZv-4k-fSM">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXP-nk-dzq">
+                                <rect key="frame" x="304" y="94" width="60" height="30"/>
+                                <state key="normal" title="Sign Out"/>
+                                <connections>
+                                    <action selector="logoutPressed:" destination="6oB-P4-Df1" eventType="touchUpInside" id="hX6-6Y-5m3"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dFm-Pk-UDt"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dFm-Pk-UDt" firstAttribute="trailing" secondItem="bXP-nk-dzq" secondAttribute="trailing" constant="50" id="XcN-IE-jCe"/>
+                            <constraint firstItem="bXP-nk-dzq" firstAttribute="top" secondItem="dFm-Pk-UDt" secondAttribute="top" constant="50" id="gG9-f4-e0Y"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="dfN-WB-Bxl"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear" catalog="system" id="dfN-WB-Bxl"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZhT-Da-ZkX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2329" y="546"/>
+            <point key="canvasLocation" x="2491" y="795"/>
         </scene>
-        <!--Item 1-->
+        <!--Ideas-->
         <scene sceneID="rgi-kI-i4N">
             <objects>
-                <viewController id="MyW-2o-VG8" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="IdeasViewController" id="MyW-2o-VG8" customClass="IdeasViewController" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fIg-BV-BnX">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="5i0-T0-lP7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="PbP-Pb-dJ2"/>
+                    <tabBarItem key="tabBarItem" title="Ideas" image="arrow.down.app" catalog="system" id="PbP-Pb-dJ2"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J3n-df-uZ0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2471" y="-75"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tabbar View Controller-->
         <scene sceneID="Ntp-5V-hj7">
             <objects>
-                <tabBarController id="xEc-z9-7yg" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8I2-C3-6eU">
+                <tabBarController storyboardIdentifier="TabbarViewController" id="xEc-z9-7yg" customClass="TabbarViewController" customModule="WhatNow" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="8I2-C3-6eU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="MyW-2o-VG8" kind="relationship" relationship="viewControllers" id="GVY-Kl-izx"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="iNA-9s-hfu"/>
                         <segue destination="6oB-P4-Df1" kind="relationship" relationship="viewControllers" id="aFj-nO-yVr"/>
                     </connections>
                 </tabBarController>
@@ -141,6 +197,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.down.app" catalog="system" width="128" height="114"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="scribble.variable" catalog="system" width="128" height="118"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

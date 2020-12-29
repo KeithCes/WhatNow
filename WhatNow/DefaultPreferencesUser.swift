@@ -20,6 +20,8 @@ class DefaultPreferencesUser {
             "adventure": 0,
             "action": 0,
             "horror": 0,
+            "sci-fi": 0,
+            "drama": 0
         ],
     ] as [String : Any]
 }

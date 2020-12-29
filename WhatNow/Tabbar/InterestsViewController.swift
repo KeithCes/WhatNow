@@ -14,9 +14,11 @@ import FirebaseStorage
 class InterestsViewController: UIViewController {
     
     @IBOutlet weak var interestsImage: UIImageView!
+    @IBOutlet weak var interestsLabel: UILabel!
     
     var ref: DatabaseReference!
     
+    var typeOfInterest: String = ""
     var videoGames: [[String:Any]] = []
     
     var defaultPreferences = DefaultPreferencesUser.defaultPreferences
@@ -33,16 +35,22 @@ class InterestsViewController: UIViewController {
     
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
     
+    //TODO: clean up ! force unwrapping
+    
     override func viewDidLoad() {
         
         ref = Database.database().reference()
         
-        ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+        self.typeOfInterest = pickInterestType()
+        
+        
+        ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+            self.getAndUpdateValuesAndImage()
         })
         
-        getAndUpdateValuesAndImage()
+        
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = .right
@@ -54,32 +62,38 @@ class InterestsViewController: UIViewController {
     }
     
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
-
         
-
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
 
             switch swipeGesture.direction {
             case .right:
                 print("Swiped right")
+                
+                self.typeOfInterest = pickInterestType()
+                
                 //TODO: add weighted randomness; items more related to user preferences get picked more often
-                ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+                ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                     //sets and updates user preferences based on the last thing swiped
                     self.setUserPreferencesVideoGames()
                     //grabs the next random video game
                     let value = snapshot.value as? NSDictionary
                     self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                    self.getAndUpdateValuesAndImage()
                 })
-                getAndUpdateValuesAndImage()
+                
                 
             case .left:
                 print("Swiped left")
-                ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.typeOfInterest = pickInterestType()
+                
+                ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                     //grabs the next random video game
                     let value = snapshot.value as? NSDictionary
                     self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                    self.getAndUpdateValuesAndImage()
                 })
-                getAndUpdateValuesAndImage()
+                
                 
             default:
                 break
@@ -102,10 +116,11 @@ class InterestsViewController: UIViewController {
             
             //gets image from backend and sets
             let imageName = self.curVideoGame["imageName"] as! String
-            let imageRef = storageRef.child("images/videogames/" + imageName)
+            let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
             imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
                 let image = UIImage(data: data!)
                 self.interestsImage.image = image
+                self.interestsLabel.text = self.curVideoGame["title"] as? String
             }
             
             //sets values to whats game has been pulled
@@ -147,5 +162,18 @@ class InterestsViewController: UIViewController {
             
             
         self.ref.child("users").child(self.userID).child("preferences").setValue(self.curUserPreferences)
+    }
+    
+    func pickInterestType() -> String{
+        let typesOfInterests = 2 //video games, movies
+        let rand = Int.random(in: 0..<typesOfInterests)
+        switch (rand) {
+        case 0:
+            return "videogames"
+        case 1:
+            return "movies"
+        default:
+            return "videogames"
+        }
     }
 }

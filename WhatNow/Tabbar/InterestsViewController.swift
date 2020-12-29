@@ -19,12 +19,11 @@ class InterestsViewController: UIViewController {
     var ref: DatabaseReference!
     
     var typeOfInterest: String = ""
-    var videoGames: [[String:Any]] = []
     
     var defaultPreferences = DefaultPreferencesUser.defaultPreferences
     
     var values: NSDictionary = [:]
-    var curVideoGame: [String:Any] = [:]
+    var curInterest: [String:Any] = [:]
     var totalIdeasSeen: Double! = nil
     
     var genre: String! = nil
@@ -46,7 +45,7 @@ class InterestsViewController: UIViewController {
         
         ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
-            self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+            self.curInterest = value?.allValues.randomElement() as! [String : Any]
             self.getAndUpdateValuesAndImage()
         })
         
@@ -74,10 +73,10 @@ class InterestsViewController: UIViewController {
                 //TODO: add weighted randomness; items more related to user preferences get picked more often
                 ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                     //sets and updates user preferences based on the last thing swiped
-                    self.setUserPreferencesVideoGames()
+                    self.setUserPreferences()
                     //grabs the next random video game
                     let value = snapshot.value as? NSDictionary
-                    self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                    self.curInterest = value?.allValues.randomElement() as! [String : Any]
                     self.getAndUpdateValuesAndImage()
                 })
                 
@@ -90,7 +89,7 @@ class InterestsViewController: UIViewController {
                 ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                     //grabs the next random video game
                     let value = snapshot.value as? NSDictionary
-                    self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                    self.curInterest = value?.allValues.randomElement() as! [String : Any]
                     self.getAndUpdateValuesAndImage()
                 })
                 
@@ -102,8 +101,8 @@ class InterestsViewController: UIViewController {
     }
     
     //gets user preferences, if empty populate with default
-    //gets image from backend and sets based on curVideoGame
-    //sets global values based on curVideoGame
+    //gets image from backend and sets based on curInterest:
+    //sets global values based on curInterest:
     func getAndUpdateValuesAndImage() {
         let storage = Storage.storage()
         let storageRef = storage.reference()
@@ -115,12 +114,12 @@ class InterestsViewController: UIViewController {
             }
             
             //gets image from backend and sets
-            let imageName = self.curVideoGame["imageName"] as! String
+            let imageName = self.curInterest["imageName"] as! String
             let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
             imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
                 let image = UIImage(data: data!)
                 self.interestsImage.image = image
-                self.interestsLabel.text = self.curVideoGame["title"] as? String
+                self.interestsLabel.text = self.curInterest["title"] as? String
             }
             
             //sets values to whats game has been pulled
@@ -141,27 +140,40 @@ class InterestsViewController: UIViewController {
     func setVideoGameValues() {
         self.totalIdeasSeen = (self.values["totalIdeasSeen"] as? Double)! + 1
         
-        self.genre = self.curVideoGame["genre"] as? String
-        self.storesGenres = self.values["genres"] as? [String:Int]
+        self.genre = self.curInterest["genre"] as? String
+        self.storesGenres = self.values["genre"] as? [String:Int]
         self.storedGenre = self.storesGenres[self.genre]
     }
     
     //calls recalculateValuesSendToDatabase() and sends out the result
-    func setUserPreferencesVideoGames() {
+    func setUserPreferences() {
         self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
-            
-        self.curUserPreferences["difficulty"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["difficulty"] as? Double ?? 5, newValue: self.curVideoGame["difficulty"] as? Double ?? 5)
-        self.curUserPreferences["multiplayer"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["multiplayer"] as? Double ?? 5, newValue: self.curVideoGame["multiplayer"] as? Double ?? 5)
-        self.curUserPreferences["popularity"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["popularity"] as? Double ?? 5, newValue: self.curVideoGame["popularity"] as? Double ?? 5)
-        self.curUserPreferences["competitive"] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values["competitive"] as? Double ?? 5, newValue: self.curVideoGame["competitive"] as? Double ?? 5)
                 
-        let curGenre: String! = self.curVideoGame["genre"] as? String
-        var storedGenres: [String:Int]! = self.values["genres"] as? [String:Int]
-        storedGenres[curGenre] = storedGenres[curGenre]! + 1
-        self.curUserPreferences["genres"] = storedGenres
+        setUnNestedPreference(preference: "difficulty")
+        setUnNestedPreference(preference: "multiplayer")
+        setUnNestedPreference(preference: "popularity")
+        setUnNestedPreference(preference: "competitive")
+        setUnNestedPreference(preference: "radicalness")
+        setNestedPreference(nestedPreference: "genre")
+        setNestedPreference(nestedPreference: "era")
             
             
         self.ref.child("users").child(self.userID).child("preferences").setValue(self.curUserPreferences)
+    }
+    
+    func setUnNestedPreference(preference: String) {
+        if self.curInterest[preference] != nil {
+            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values[preference] as? Double ?? 5, newValue: self.curInterest[preference] as? Double ?? 5)
+        }
+    }
+    
+    func setNestedPreference(nestedPreference: String) {
+        if self.curInterest[nestedPreference] != nil {
+            let curGenre: String! = self.curInterest[nestedPreference] as? String
+            var storedGenres: [String:Int]! = self.values[nestedPreference] as? [String:Int]
+            storedGenres[curGenre] = storedGenres[curGenre]! + 1
+            self.curUserPreferences[nestedPreference] = storedGenres
+        }
     }
     
     func pickInterestType() -> String{

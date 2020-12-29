@@ -29,44 +29,20 @@ class InterestsViewController: UIViewController {
     var storesGenres: [String:Int]! = nil
     var storedGenre: Int! = nil
     
+    let userID = Auth.auth().currentUser!.uid
+    
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
     
     override func viewDidLoad() {
         
         ref = Database.database().reference()
         
-        //gets list of all video games from backend
         ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
         })
         
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        
-        //gets initial user preferences
-        ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            if value == nil {
-                self.ref.child("42069").child("preference").setValue(self.defaultPreferences)
-            }
-            
-            //gets image from backend and sets
-            let imageName = self.curVideoGame["imageName"] as! String
-            let imageRef = storageRef.child("images/videogames/" + imageName)
-            imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
-                let image = UIImage(data: data!)
-                self.interestsImage.image = image
-            }
-            
-            //sets values to whats game has been pulled
-            self.ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-                self.values = snapshot.value as! NSDictionary
-                self.setVideoGameValues()
-            })
-        })
-        
-        
+        getAndUpdateValuesAndImage()
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = .right
@@ -86,43 +62,58 @@ class InterestsViewController: UIViewController {
             switch swipeGesture.direction {
             case .right:
                 print("Swiped right")
-                
                 //TODO: add weighted randomness; items more related to user preferences get picked more often
-                
-                let storage = Storage.storage()
-                let storageRef = storage.reference()
-                
-                //gets next image from backend and sets
-                let imageName = self.curVideoGame["imageName"] as! String
-                let imageRef = storageRef.child("images/videogames/" + imageName)
-                imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
-                    let image = UIImage(data: data!)
-                    self.interestsImage.image = image
-                }
-                
-                //gets list of all video games from backend
                 ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+                    //sets and updates user preferences based on the last thing swiped
+                    self.setUserPreferencesVideoGames()
+                    //grabs the next random video game
                     let value = snapshot.value as? NSDictionary
                     self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
                 })
-                
-                //sets values to whats game has been pulled
-                ref.child("42069").child("preference").observeSingleEvent(of: .value, with: { (snapshot) in
-                    self.setVideoGameValues()
-                    self.values = snapshot.value as! NSDictionary
-                })
-                
-                
-                self.setUserPreferencesVideoGames()
+                getAndUpdateValuesAndImage()
                 
             case .left:
                 print("Swiped left")
-                let rand = Int.random(in: 0..<videoGames.count)
-                interestsImage.image = UIImage(named: self.videoGames[rand]["imageName"] as! String)
+                ref.child("videogames").observeSingleEvent(of: .value, with: { (snapshot) in
+                    //grabs the next random video game
+                    let value = snapshot.value as? NSDictionary
+                    self.curVideoGame = value?.allValues.randomElement() as! [String : Any]
+                })
+                getAndUpdateValuesAndImage()
+                
             default:
                 break
             }
         }
+    }
+    
+    //gets user preferences, if empty populate with default
+    //gets image from backend and sets based on curVideoGame
+    //sets global values based on curVideoGame
+    func getAndUpdateValuesAndImage() {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            if value == nil {
+                self.ref.child("users").child(self.userID).child("preferences").setValue(self.defaultPreferences)
+            }
+            
+            //gets image from backend and sets
+            let imageName = self.curVideoGame["imageName"] as! String
+            let imageRef = storageRef.child("images/videogames/" + imageName)
+            imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
+                let image = UIImage(data: data!)
+                self.interestsImage.image = image
+            }
+            
+            //sets values to whats game has been pulled
+            self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                self.values = snapshot.value as! NSDictionary
+                self.setVideoGameValues()
+            })
+        })
     }
     
     //averages weighted the new values
@@ -155,6 +146,6 @@ class InterestsViewController: UIViewController {
         self.curUserPreferences["genres"] = storedGenres
             
             
-        self.ref.child("42069").child("preference").setValue(self.curUserPreferences)
+        self.ref.child("users").child(self.userID).child("preferences").setValue(self.curUserPreferences)
     }
 }

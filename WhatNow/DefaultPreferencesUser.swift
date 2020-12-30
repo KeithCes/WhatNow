@@ -36,6 +36,11 @@ class DefaultPreferencesUser {
             "00s": 0,
             "10s": 0,
             "modern": 0
+        ],
+        "interests":
+        [
+            "videogames": 0,
+            "movies": 0
         ]
     ] as [String : Any]
 }

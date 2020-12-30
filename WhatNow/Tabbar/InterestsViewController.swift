@@ -27,15 +27,9 @@ class InterestsViewController: UIViewController {
     var curInterest: [String:Any] = [:]
     var totalIdeasSeen: Double! = nil
     
-    var genre: String! = nil
-    var storesGenres: [String:Int]! = nil
-    var storedGenre: Int! = nil
-    
     let userID = Auth.auth().currentUser!.uid
     
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
-    
-    //TODO: clean up ! force unwrapping
     
     override func viewDidLoad() {
         
@@ -69,6 +63,12 @@ class InterestsViewController: UIViewController {
             case .right:
                 print("Swiped right")
                 
+                //sets the interests preference based on the previous one before we call the next one
+                var storedInterests: [String:Int]! = self.pastUserPreferences["interests"] as? [String:Int]
+                storedInterests[self.typeOfInterest] = storedInterests[self.typeOfInterest]! + 1
+                self.curUserPreferences["interests"] = storedInterests
+                
+                //calls the next interest
                 self.typeOfInterest = pickInterestType()
                 
                 //TODO: add weighted randomness; items more related to user preferences get picked more often
@@ -124,7 +124,7 @@ class InterestsViewController: UIViewController {
             //sets values to whats game has been pulled
             self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
                 self.pastUserPreferences = snapshot.value as! NSDictionary
-                self.setVideoGameValues()
+                self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
             })
         })
     }
@@ -133,15 +133,6 @@ class InterestsViewController: UIViewController {
     func recalculateValuesSendToDatabase(totalIdeasSeen: Double, storedValue: Double, newValue: Double) -> Double {
         let recalculatedValue = ((newValue - storedValue) / totalIdeasSeen) + storedValue
         return recalculatedValue
-    }
-    
-    //sets the globals to be the values that are pulled
-    func setVideoGameValues() {
-        self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
-        
-        self.genre = self.curInterest["genre"] as? String
-        self.storesGenres = self.pastUserPreferences["genre"] as? [String:Int]
-        self.storedGenre = self.storesGenres[self.genre]
     }
     
     //calls recalculateValuesSendToDatabase() and sends out the result
@@ -170,10 +161,10 @@ class InterestsViewController: UIViewController {
     
     func setNestedPreference(nestedPreference: String) {
         if self.curInterest[nestedPreference] != nil && pastUserPreferences[nestedPreference] != nil {
-            let curGenre: String! = self.curInterest[nestedPreference] as? String
-            var storedGenres: [String:Int]! = self.pastUserPreferences[nestedPreference] as? [String:Int]
-            storedGenres[curGenre] = storedGenres[curGenre]! + 1
-            self.curUserPreferences[nestedPreference] = storedGenres
+            let curInterestName: String! = self.curInterest[nestedPreference] as? String
+            var curNestedPreferences: [String:Int]! = self.pastUserPreferences[nestedPreference] as? [String:Int]
+            curNestedPreferences[curInterestName] = curNestedPreferences[curInterestName]! + 1
+            self.curUserPreferences[nestedPreference] = curNestedPreferences
         }
         else {
             self.curUserPreferences[nestedPreference] = self.pastUserPreferences[nestedPreference]

@@ -367,6 +367,7 @@ DEPENDENCIES:
   - FirebaseUI/Auth
   - FirebaseUI/Google
   - FirebaseUI/Phone
+  - FirebaseUI/Storage
   - SkyFloatingLabelTextField
 
 SPEC REPOS:
@@ -438,6 +439,6 @@ SPEC CHECKSUMS:
   SDWebImage: f66a16b95183b92ed6b965ad21d33167bc07612d
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: 7e67ea5d827c215c84a736b24abfb5e5f9e4af6d
+PODFILE CHECKSUM: 08a8eda2ff2a3ab264ae4a045dba4c2b3aedfd9e
 
 COCOAPODS: 1.9.3

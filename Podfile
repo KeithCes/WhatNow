@@ -12,6 +12,7 @@ target 'WhatNow' do
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/Phone'
   pod 'FirebaseUI/Google'
+  pod 'FirebaseUI/Storage'
 
   pod 'SkyFloatingLabelTextField'
   

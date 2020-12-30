@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 import FirebaseStorage
+import FirebaseUI
 
 class InterestsViewController: UIViewController {
     
@@ -116,11 +117,9 @@ class InterestsViewController: UIViewController {
             //gets image from backend and sets
             let imageName = self.curInterest["imageName"] as! String
             let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
-            imageRef.getData(maxSize: 1 * 69696 * 69696) { data, error  in
-                let image = UIImage(data: data!)
-                self.interestsImage.image = image
-                self.interestsLabel.text = self.curInterest["title"] as? String
-            }
+            let placeholderImage = UIImage(named: "")
+            self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage)
+            self.interestsLabel.text = self.curInterest["title"] as? String
             
             //sets values to whats game has been pulled
             self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -138,7 +137,7 @@ class InterestsViewController: UIViewController {
     
     //sets the globals to be the values that are pulled
     func setVideoGameValues() {
-        self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as? Double)! + 1
+        self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
         
         self.genre = self.curInterest["genre"] as? String
         self.storesGenres = self.pastUserPreferences["genre"] as? [String:Int]
@@ -147,7 +146,7 @@ class InterestsViewController: UIViewController {
     
     //calls recalculateValuesSendToDatabase() and sends out the result
     func setUserPreferences() {
-        self.curUserPreferences["totalIdeasSeen"] = (self.pastUserPreferences["totalIdeasSeen"] as? Double)! + 1
+        self.curUserPreferences["totalIdeasSeen"] = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
                 
         setUnNestedPreference(preference: "difficulty")
         setUnNestedPreference(preference: "multiplayer")
@@ -162,7 +161,7 @@ class InterestsViewController: UIViewController {
     
     func setUnNestedPreference(preference: String) {
         if self.curInterest[preference] != nil && pastUserPreferences[preference] != nil {
-            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: (self.pastUserPreferences[preference] as? Double)!, newValue: (self.curInterest[preference] as? Double)!)
+            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.pastUserPreferences[preference] as! Double, newValue: self.curInterest[preference] as! Double)
         }
         else {
             self.curUserPreferences[preference] = self.pastUserPreferences[preference]

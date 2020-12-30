@@ -22,7 +22,7 @@ class InterestsViewController: UIViewController {
     
     var defaultPreferences = DefaultPreferencesUser.defaultPreferences
     
-    var values: NSDictionary = [:]
+    var pastUserPreferences: NSDictionary = [:]
     var curInterest: [String:Any] = [:]
     var totalIdeasSeen: Double! = nil
     
@@ -124,7 +124,7 @@ class InterestsViewController: UIViewController {
             
             //sets values to whats game has been pulled
             self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
-                self.values = snapshot.value as! NSDictionary
+                self.pastUserPreferences = snapshot.value as! NSDictionary
                 self.setVideoGameValues()
             })
         })
@@ -138,16 +138,16 @@ class InterestsViewController: UIViewController {
     
     //sets the globals to be the values that are pulled
     func setVideoGameValues() {
-        self.totalIdeasSeen = (self.values["totalIdeasSeen"] as? Double)! + 1
+        self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as? Double)! + 1
         
         self.genre = self.curInterest["genre"] as? String
-        self.storesGenres = self.values["genre"] as? [String:Int]
+        self.storesGenres = self.pastUserPreferences["genre"] as? [String:Int]
         self.storedGenre = self.storesGenres[self.genre]
     }
     
     //calls recalculateValuesSendToDatabase() and sends out the result
     func setUserPreferences() {
-        self.curUserPreferences["totalIdeasSeen"] = (self.values["totalIdeasSeen"] as? Double)! + 1
+        self.curUserPreferences["totalIdeasSeen"] = (self.pastUserPreferences["totalIdeasSeen"] as? Double)! + 1
                 
         setUnNestedPreference(preference: "difficulty")
         setUnNestedPreference(preference: "multiplayer")
@@ -157,22 +157,27 @@ class InterestsViewController: UIViewController {
         setNestedPreference(nestedPreference: "genre")
         setNestedPreference(nestedPreference: "era")
             
-            
         self.ref.child("users").child(self.userID).child("preferences").setValue(self.curUserPreferences)
     }
     
     func setUnNestedPreference(preference: String) {
-        if self.curInterest[preference] != nil {
-            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.values[preference] as? Double ?? 5, newValue: self.curInterest[preference] as? Double ?? 5)
+        if self.curInterest[preference] != nil && pastUserPreferences[preference] != nil {
+            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: (self.pastUserPreferences[preference] as? Double)!, newValue: (self.curInterest[preference] as? Double)!)
+        }
+        else {
+            self.curUserPreferences[preference] = self.pastUserPreferences[preference]
         }
     }
     
     func setNestedPreference(nestedPreference: String) {
-        if self.curInterest[nestedPreference] != nil {
+        if self.curInterest[nestedPreference] != nil && pastUserPreferences[nestedPreference] != nil {
             let curGenre: String! = self.curInterest[nestedPreference] as? String
-            var storedGenres: [String:Int]! = self.values[nestedPreference] as? [String:Int]
+            var storedGenres: [String:Int]! = self.pastUserPreferences[nestedPreference] as? [String:Int]
             storedGenres[curGenre] = storedGenres[curGenre]! + 1
             self.curUserPreferences[nestedPreference] = storedGenres
+        }
+        else {
+            self.curUserPreferences[nestedPreference] = self.pastUserPreferences[nestedPreference]
         }
     }
     

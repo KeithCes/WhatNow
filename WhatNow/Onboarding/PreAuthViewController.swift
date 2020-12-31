@@ -15,6 +15,16 @@ class PreAuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //if user preferences are nil populate here
+        let ref = Database.database().reference()
+        let userID = Auth.auth().currentUser!.uid
+        let defaultPreferences = DefaultPreferencesUser.defaultPreferences
+        ref.child("users").child(userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            if value == nil {
+                ref.child("users").child(userID).child("preferences").setValue(defaultPreferences)
+            }
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {

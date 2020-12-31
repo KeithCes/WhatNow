@@ -21,8 +21,6 @@ class InterestsViewController: UIViewController {
     
     var typeOfInterest: String = ""
     
-    var defaultPreferences = DefaultPreferencesUser.defaultPreferences
-    
     var pastUserPreferences: NSDictionary = [:]
     var curInterest: [String:Any] = [:]
     var totalIdeasSeen: Double! = nil
@@ -31,18 +29,24 @@ class InterestsViewController: UIViewController {
     
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
     
+    //TODO: rename totalIdeasSeen to totalInterestsSeen
+    
     override func viewDidLoad() {
         
         ref = Database.database().reference()
-        
-        self.typeOfInterest = pickInterestType()
-        
-        
-        ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            self.curInterest = value?.allValues.randomElement() as! [String : Any]
-            self.getAndUpdateValuesAndImage()
+
+        self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+            let allPreferences = snapshot.value as? NSDictionary
+            self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
+            
+            self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                let value = snapshot.value as? NSDictionary
+                self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                self.getAndUpdateValuesAndImage()
+            })
         })
+        
+        
         
         
         
@@ -69,31 +73,35 @@ class InterestsViewController: UIViewController {
                 self.curUserPreferences["interests"] = storedInterests
                 
                 //calls the next interest
-                self.typeOfInterest = pickInterestType()
+                ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                    let allPreferences = snapshot.value as? NSDictionary
+                    self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
                 
-                //TODO: add weighted randomness; items more related to user preferences get picked more often
-                ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
-                    //sets and updates user preferences based on the last thing swiped
-                    self.setUserPreferences()
-                    //grabs the next random video game
-                    let value = snapshot.value as? NSDictionary
-                    self.curInterest = value?.allValues.randomElement() as! [String : Any]
-                    self.getAndUpdateValuesAndImage()
+                    //TODO: add weighted randomness; items more related to user preferences get picked more often
+                    self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                        //sets and updates user preferences based on the last thing swiped
+                        self.setUserPreferences()
+                        //grabs the next random video game
+                        let value = snapshot.value as? NSDictionary
+                        self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                        self.getAndUpdateValuesAndImage()
+                    })
                 })
                 
                 
             case .left:
                 print("Swiped left")
                 
-                self.typeOfInterest = pickInterestType()
-                
-                ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
-                    //grabs the next random video game
-                    let value = snapshot.value as? NSDictionary
-                    self.curInterest = value?.allValues.randomElement() as! [String : Any]
-                    self.getAndUpdateValuesAndImage()
+                ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                    let allPreferences = snapshot.value as? NSDictionary
+                    self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
+                    
+                    self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let value = snapshot.value as? NSDictionary
+                        self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                        self.getAndUpdateValuesAndImage()
+                    })
                 })
-                
                 
             default:
                 break
@@ -108,24 +116,17 @@ class InterestsViewController: UIViewController {
         let storage = Storage.storage()
         let storageRef = storage.reference()
         
+        //gets image from backend and sets
+        let imageName = self.curInterest["imageName"] as! String
+        let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
+        let placeholderImage = UIImage(named: "blank")
+        self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage)
+        self.interestsLabel.text = self.curInterest["title"] as? String
+            
+        //sets values to whats game has been pulled
         self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
-            let value = snapshot.value as? NSDictionary
-            if value == nil {
-                self.ref.child("users").child(self.userID).child("preferences").setValue(self.defaultPreferences)
-            }
-            
-            //gets image from backend and sets
-            let imageName = self.curInterest["imageName"] as! String
-            let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
-            let placeholderImage = UIImage(named: "")
-            self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage)
-            self.interestsLabel.text = self.curInterest["title"] as? String
-            
-            //sets values to whats game has been pulled
-            self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
-                self.pastUserPreferences = snapshot.value as! NSDictionary
-                self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
-            })
+            self.pastUserPreferences = snapshot.value as! NSDictionary
+            self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
         })
     }
     
@@ -171,16 +172,46 @@ class InterestsViewController: UIViewController {
         }
     }
     
-    func pickInterestType() -> String{
-        let typesOfInterests = 2 //video games, movies
-        let rand = Int.random(in: 0..<typesOfInterests)
-        switch (rand) {
-        case 0:
-            return "videogames"
-        case 1:
-            return "movies"
-        default:
-            return "videogames"
+    func pickInterestType(allInterests: [String:Int]) -> String {
+        var totalInterests: Double = 0
+        var weightedInterests: [Double] = []
+        var typesOfInterests: [String] = []
+        
+        for interests in allInterests {
+            totalInterests += Double(interests.value)
         }
+        for interests in allInterests {
+            let interestsValue = Double(interests.value)
+            weightedInterests.append(interestsValue / totalInterests)
+            typesOfInterests.append(interests.key)
+        }
+        
+        let rand = randomNumber(probabilities: weightedInterests)
+        
+        return typesOfInterests[rand]
+    }
+    
+    func randomNumber(probabilities: [Double]) -> Int {
+
+        for element in probabilities {
+            if element.isNaN {
+                return 0
+            }
+        }
+        
+        // Sum of all probabilities (so that we don't have to require that the sum is 1.0):
+        let sum = probabilities.reduce(0, +)
+        // Random number in the range 0.0 <= rnd < sum :
+        let rnd = Double.random(in: 0.0 ..< sum)
+        // Find the first interval of accumulated probabilities into which `rnd` falls:
+        var accum = 0.0
+        for (i, p) in probabilities.enumerated() {
+            accum += p
+            if rnd < accum {
+                return i
+            }
+        }
+        // This point might be reached due to floating point inaccuracies:
+        return (probabilities.count - 1)
     }
 }

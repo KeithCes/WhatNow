@@ -39,8 +39,8 @@ class DefaultPreferencesUser {
         ],
         "interests":
         [
-            "videogames": 0,
-            "movies": 0
+            "videogames": 10,
+            "movies": 10
         ]
     ] as [String : Any]
 }

@@ -37,11 +37,16 @@ class InterestsViewController: UIViewController {
 
         self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
             let allPreferences = snapshot.value as? NSDictionary
+            //picks type of interest from all interests
             self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
             
+            //grabs all interests of chosen type from backend
             self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
-                self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                
+                //choose random interest to use
+                self.curInterest = self.addKickerToPreferences(userPreferences: allPreferences as! [String : Any], interests: value as! [String : [String:Any]])
+                //update
                 self.getAndUpdateValuesAndImage()
             })
         })
@@ -188,9 +193,39 @@ class InterestsViewController: UIViewController {
         
         let rand = RandomNumberProbability.randomNumber(probabilities: weightedInterests)
         
-        print(weightedInterests)
-        print(rand)
-        
         return typesOfInterests[rand]
+    }
+    
+    func addKickerToPreferences(userPreferences: [String:Any], interests: [String:[String:Any]]) -> [String : Any] {
+        var kickedPreferences: [String:Double] = [:]
+        for preference in userPreferences {
+            if let _ = preference.value as? Double {
+                let rand = Double.random(in: -2.0...2.0)
+                kickedPreferences[preference.key] = preference.value as! Double + rand
+            }
+            else {
+                
+            }
+        }
+        var allDifferences: [Double] = []
+        var allDifferencesTitles: [String] = []
+        for interest in interests {
+            let interestName = interest.key
+            let interestData = interest.value
+            var kickedDifference: Double = 0
+            for interestProperty in interestData {
+                for preferenceProperty in kickedPreferences {
+                    if interestProperty.key == preferenceProperty.key {
+                        let curDifference: Double = abs(interestProperty.value as! Double - preferenceProperty.value)
+                        kickedDifference += curDifference
+                    }
+                }
+            }
+            allDifferences.append(kickedDifference)
+            allDifferencesTitles.append(interestName)
+        }
+        let minDiff = allDifferences.min()
+        let indMinDiff = allDifferences.firstIndex(of: minDiff!)
+        return interests[allDifferencesTitles[indMinDiff!]]!
     }
 }

@@ -89,6 +89,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 print("logged in")
                 userEmail = self.emailField.text!
                 
+                //if user preferences are nil populate here
+                let ref = Database.database().reference()
+                let userID = Auth.auth().currentUser!.uid
+                let defaultPreferences = DefaultPreferencesUser.defaultPreferences
+                ref.child("users").child(userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                    let value = snapshot.value as? NSDictionary
+                    if value == nil {
+                        ref.child("users").child(userID).child("preferences").setValue(defaultPreferences)
+                    }
+                })
+                
                 self.transitionToMain()
             }
             else {

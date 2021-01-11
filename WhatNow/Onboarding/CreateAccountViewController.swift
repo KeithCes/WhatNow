@@ -136,6 +136,16 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
                     let userDetails = ["email": self.emailField.text!, "username": self.userField.text!]
                     self.ref.child("users").child(userID).setValue(userDetails)
                     
+                    //if user preferences are nil populate here
+                    let ref = Database.database().reference()
+                    let defaultPreferences = DefaultPreferencesUser.defaultPreferences
+                    ref.child("users").child(userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                        let value = snapshot.value as? NSDictionary
+                        if value == nil {
+                            ref.child("users").child(userID).child("preferences").setValue(defaultPreferences)
+                        }
+                    })
+                    
                     print("user created")
                     
                     self.transitionToMain()

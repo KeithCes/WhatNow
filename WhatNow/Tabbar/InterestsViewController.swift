@@ -197,11 +197,28 @@ class InterestsViewController: UIViewController {
     }
     
     func addKickerToPreferences(userPreferences: [String:Any], interests: [String:[String:Any]]) -> [String : Any] {
+        //TODO: remove all force unwraps and optimize shitty loops, hacky ass code below
         var kickedPreferences: [String:Double] = [:]
+        var kickedNestedPreferences: [String:[String:Double]] = [:]
         for preference in userPreferences {
             if let _ = preference.value as? Double {
+                //TODO: rarely make random go completely out of range to suggest stuff out of comfort zone
                 let rand = Double.random(in: -2.0...2.0)
                 kickedPreferences[preference.key] = preference.value as! Double + rand
+            }
+            else if let _ = preference.value as? [String:Double] {
+                let allPreferences: [String:Double] = preference.value as! [String : Double]
+                var totalProperties: Double = 0
+                kickedNestedPreferences[preference.key] = preference.value as? [String : Double]
+                for property in allPreferences {
+                    totalProperties += property.value
+                }
+                for property in allPreferences {
+                    //TODO: make nesteds with 0 in properties = highest weight instead of flat 1 (scaling)
+                    let rand = Double.random(in: -0.0...1.5)
+                    let newPropertyValue = (1 - (property.value / totalProperties)) + rand
+                    kickedNestedPreferences[preference.key]![property.key] = newPropertyValue
+                }
             }
             else {
                 
@@ -214,10 +231,20 @@ class InterestsViewController: UIViewController {
             let interestData = interest.value
             var kickedDifference: Double = 0
             for interestProperty in interestData {
+                //calcs difference for each interest property vs kicked preferences proptery
                 for preferenceProperty in kickedPreferences {
                     if interestProperty.key == preferenceProperty.key {
                         let curDifference: Double = abs(interestProperty.value as! Double - preferenceProperty.value)
                         kickedDifference += curDifference
+                    }
+                }
+                //calcs difference for each nested interest property vs kicked preferences proptery
+                if kickedNestedPreferences[interestProperty.key] != nil {
+                    for nestedPreferenceProperty in kickedNestedPreferences[interestProperty.key]! {
+                        if interestProperty.value as! String == nestedPreferenceProperty.key {
+                            let curDifference: Double = abs(nestedPreferenceProperty.value)
+                            kickedDifference += curDifference
+                        }
                     }
                 }
             }

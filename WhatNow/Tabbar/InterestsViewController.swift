@@ -23,13 +23,11 @@ class InterestsViewController: UIViewController {
     
     var pastUserPreferences: NSDictionary = [:]
     var curInterest: [String:Any] = [:]
-    var totalIdeasSeen: Double! = nil
+    var totalInterestsSeen: Double! = nil
     
     let userID = Auth.auth().currentUser!.uid
     
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
-    
-    //TODO: rename totalIdeasSeen to totalInterestsSeen
     
     override func viewDidLoad() {
         
@@ -131,19 +129,19 @@ class InterestsViewController: UIViewController {
         //sets values to whats game has been pulled
         self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
             self.pastUserPreferences = snapshot.value as! NSDictionary
-            self.totalIdeasSeen = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
+            self.totalInterestsSeen = (self.pastUserPreferences["totalInterestsSeen"] as! Double) + 1.0
         })
     }
     
     //averages weighted the new values
-    func recalculateValuesSendToDatabase(totalIdeasSeen: Double, storedValue: Double, newValue: Double) -> Double {
-        let recalculatedValue = ((newValue - storedValue) / totalIdeasSeen) + storedValue
+    func recalculateValuesSendToDatabase(totalInterestsSeen: Double, storedValue: Double, newValue: Double) -> Double {
+        let recalculatedValue = ((newValue - storedValue) / totalInterestsSeen) + storedValue
         return recalculatedValue
     }
     
     //calls recalculateValuesSendToDatabase() and sends out the result
     func setUserPreferences() {
-        self.curUserPreferences["totalIdeasSeen"] = (self.pastUserPreferences["totalIdeasSeen"] as! Double) + 1.0
+        self.curUserPreferences["totalInterestsSeen"] = (self.pastUserPreferences["totalInterestsSeen"] as! Double) + 1.0
                 
         setUnNestedPreference(preference: "difficulty")
         setUnNestedPreference(preference: "multiplayer")
@@ -158,7 +156,7 @@ class InterestsViewController: UIViewController {
     
     func setUnNestedPreference(preference: String) {
         if self.curInterest[preference] != nil && pastUserPreferences[preference] != nil {
-            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalIdeasSeen: self.totalIdeasSeen, storedValue: self.pastUserPreferences[preference] as! Double, newValue: self.curInterest[preference] as! Double)
+            self.curUserPreferences[preference] = self.recalculateValuesSendToDatabase(totalInterestsSeen: self.totalInterestsSeen, storedValue: self.pastUserPreferences[preference] as! Double, newValue: self.curInterest[preference] as! Double)
         }
         else {
             self.curUserPreferences[preference] = self.pastUserPreferences[preference]
@@ -253,6 +251,6 @@ class InterestsViewController: UIViewController {
         }
         let minDiff = allDifferences.min()
         let indMinDiff = allDifferences.firstIndex(of: minDiff!)
-        return interests[allDifferencesTitles[indMinDiff!]]!
+        return interests[allDifferencesTitles[indMinDiff ?? 0]]!
     }
 }

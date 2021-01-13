@@ -10,7 +10,7 @@ import Foundation
 class DefaultPreferencesUser {
     static let defaultPreferences =
     [
-        "totalIdeasSeen": 1,
+        "totalInterestsSeen": 1,
         "difficulty": 5,
         "popularity": 5,
         "multiplayer": 5,

@@ -52,6 +52,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Interests" image="scribble.variable" catalog="system" id="gZK-g9-Ua1"/>
                     <connections>
+                        <outlet property="interestsCard" destination="es1-Mo-w57" id="MKf-p0-3IZ"/>
                         <outlet property="interestsImage" destination="zE9-c1-q7F" id="NnF-DS-yhF"/>
                         <outlet property="interestsLabel" destination="zUE-7I-Aqb" id="iuV-CG-DWa"/>
                     </connections>

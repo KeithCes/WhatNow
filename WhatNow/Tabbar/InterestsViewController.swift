@@ -16,6 +16,7 @@ class InterestsViewController: UIViewController {
     
     @IBOutlet weak var interestsImage: UIImageView!
     @IBOutlet weak var interestsLabel: UILabel!
+    @IBOutlet weak var interestsCard: UIView!
     
     var ref: DatabaseReference!
     
@@ -79,10 +80,10 @@ class InterestsViewController: UIViewController {
                 movement.fromValue = NSValue(cgPoint: fromPt)
                 movement.toValue = NSValue(cgPoint: toPt)
                 movement.duration = 3
-                interestsImage.layer.add(movement, forKey: "move")
+                interestsCard.layer.add(movement, forKey: "move")
                 
-                interestsImage.rotate()
-                interestsImage.fadeOut()
+                interestsCard.rotate()
+                interestsCard.fadeOut()
                 
                 
                 //sets the interests preference based on the previous one before we call the next one
@@ -103,9 +104,9 @@ class InterestsViewController: UIViewController {
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
                         self.getAndUpdateValuesAndImage()
                         
-                        self.interestsImage.layer.removeAllAnimations()
+                        self.interestsCard.layer.removeAllAnimations()
                         
-                        self.interestsImage.fadeIn()
+                        self.interestsCard.fadeIn()
                     })
                 })
                 
@@ -121,7 +122,10 @@ class InterestsViewController: UIViewController {
                 movement.fromValue = NSValue(cgPoint: fromPt)
                 movement.toValue = NSValue(cgPoint: toPt)
                 movement.duration = 3
-                interestsImage.layer.add(movement, forKey: "move")
+                interestsCard.layer.add(movement, forKey: "move")
+                
+                interestsCard.rotateCounter()
+                interestsCard.fadeOut()
                 
                 ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
                     let allPreferences = snapshot.value as? NSDictionary
@@ -131,6 +135,10 @@ class InterestsViewController: UIViewController {
                         let value = snapshot.value as? NSDictionary
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
                         self.getAndUpdateValuesAndImage()
+                        
+                        self.interestsCard.layer.removeAllAnimations()
+                        
+                        self.interestsCard.fadeIn()
                     })
                 })
                 

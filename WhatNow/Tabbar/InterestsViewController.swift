@@ -70,6 +70,21 @@ class InterestsViewController: UIViewController {
             case .right:
                 print("Swiped right")
                 
+                
+                //animation
+                let fromPt = CGPoint(x: 0.0, y: 0)
+                let toPt = CGPoint(x: 2500.0, y: 0)
+                let movement = CABasicAnimation(keyPath: "position")
+                movement.isAdditive = true
+                movement.fromValue = NSValue(cgPoint: fromPt)
+                movement.toValue = NSValue(cgPoint: toPt)
+                movement.duration = 3
+                interestsImage.layer.add(movement, forKey: "move")
+                
+                interestsImage.rotate()
+                interestsImage.fadeOut()
+                
+                
                 //sets the interests preference based on the previous one before we call the next one
                 var storedInterests: [String:Int]! = self.pastUserPreferences["interests"] as? [String:Int]
                 storedInterests[self.typeOfInterest] = storedInterests[self.typeOfInterest]! + 1
@@ -80,7 +95,6 @@ class InterestsViewController: UIViewController {
                     let allPreferences = snapshot.value as? NSDictionary
                     self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
                 
-                    //TODO: add weighted randomness; items more related to user preferences get picked more often
                     self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                         //sets and updates user preferences based on the last thing swiped
                         self.setUserPreferences()
@@ -88,12 +102,26 @@ class InterestsViewController: UIViewController {
                         let value = snapshot.value as? NSDictionary
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
                         self.getAndUpdateValuesAndImage()
+                        
+                        self.interestsImage.layer.removeAllAnimations()
+                        
+                        self.interestsImage.fadeIn()
                     })
                 })
                 
                 
             case .left:
                 print("Swiped left")
+                
+                //animation
+                let fromPt = CGPoint(x: 0.0, y: 0)
+                let toPt = CGPoint(x: -2500.0, y: 0)
+                let movement = CABasicAnimation(keyPath: "position")
+                movement.isAdditive = true
+                movement.fromValue = NSValue(cgPoint: fromPt)
+                movement.toValue = NSValue(cgPoint: toPt)
+                movement.duration = 3
+                interestsImage.layer.add(movement, forKey: "move")
                 
                 ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
                     let allPreferences = snapshot.value as? NSDictionary
@@ -212,7 +240,7 @@ class InterestsViewController: UIViewController {
                     totalProperties += property.value
                 }
                 for property in allPreferences {
-                    //TODO: make nesteds with 0 in properties = highest weight instead of flat 1 (scaling)
+                    //TODO: make nesteds with 0 in properties = highest weight instead of flat 1 (add scaling)
                     let rand = Double.random(in: -0.0...1.5)
                     let newPropertyValue = (1 - (property.value / totalProperties)) + rand
                     kickedNestedPreferences[preference.key]![property.key] = newPropertyValue

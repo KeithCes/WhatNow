@@ -22,7 +22,8 @@ class DefaultPreferencesUser {
             "action": 0,
             "horror": 0,
             "sci-fi": 0,
-            "drama": 0
+            "drama": 0,
+            "TEST": 0
         ],
         "era":
         [

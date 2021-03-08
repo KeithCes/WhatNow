@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		006F81A27F4343D449CDEEB1 /* Pods_WhatNow_WhatNowUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04151A821964BDF4C49F6125 /* Pods_WhatNow_WhatNowUITests.framework */; };
 		0ABFB82932D98EEF943B1FFF /* Pods_WhatNowTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8652BA8045AAC6AEE0E4B71 /* Pods_WhatNowTests.framework */; };
+		5306E83125F5F74E00418537 /* UIImageView+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5306E83025F5F74E00418537 /* UIImageView+Tools.swift */; };
 		53FB6948259D771900CABB4C /* RandomNumberProbability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FB6947259D771900CABB4C /* RandomNumberProbability.swift */; };
 		53FDE71525927D7F00A8384E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE71425927D7F00A8384E /* AppDelegate.swift */; };
 		53FDE71725927D7F00A8384E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE71625927D7F00A8384E /* SceneDelegate.swift */; };
@@ -54,6 +55,7 @@
 		04151A821964BDF4C49F6125 /* Pods_WhatNow_WhatNowUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhatNow_WhatNowUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		077D279FE5361DB01816A288 /* Pods-WhatNowTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNowTests.debug.xcconfig"; path = "Target Support Files/Pods-WhatNowTests/Pods-WhatNowTests.debug.xcconfig"; sourceTree = "<group>"; };
 		39056037FD204D4C6C835BD0 /* Pods-WhatNowTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhatNowTests.release.xcconfig"; path = "Target Support Files/Pods-WhatNowTests/Pods-WhatNowTests.release.xcconfig"; sourceTree = "<group>"; };
+		5306E83025F5F74E00418537 /* UIImageView+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Tools.swift"; sourceTree = "<group>"; };
 		53FB6947259D771900CABB4C /* RandomNumberProbability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNumberProbability.swift; sourceTree = "<group>"; };
 		53FDE71125927D7F00A8384E /* WhatNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53FDE71425927D7F00A8384E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +132,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		5306E82F25F5F6F900418537 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5306E83025F5F74E00418537 /* UIImageView+Tools.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		53FB694C259D772000CABB4C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,10 +173,11 @@
 		53FDE71325927D7F00A8384E /* WhatNow */ = {
 			isa = PBXGroup;
 			children = (
-				53FB694C259D772000CABB4C /* Helpers */,
 				53FDE960259A9F7600A8384E /* Structs */,
 				53FDE95F259A9F4D00A8384E /* Tabbar */,
 				53FDE95E259A9F2A00A8384E /* Onboarding */,
+				53FB694C259D772000CABB4C /* Helpers */,
+				5306E82F25F5F6F900418537 /* Extensions */,
 				53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */,
 				53FDE71A25927D7F00A8384E /* Main.storyboard */,
 				53FDE71D25927D8200A8384E /* Assets.xcassets */,
@@ -522,6 +533,7 @@
 				53FDE7842592841500A8384E /* InterestsViewController.swift in Sources */,
 				53FDE71725927D7F00A8384E /* SceneDelegate.swift in Sources */,
 				53FDE7A92592AA7B00A8384E /* DefaultPreferencesUser.swift in Sources */,
+				5306E83125F5F74E00418537 /* UIImageView+Tools.swift in Sources */,
 				53FDE78E25928D5500A8384E /* UserData.swift in Sources */,
 				53FDE7892592864A00A8384E /* VideoGames.swift in Sources */,
 				53FB6948259D771900CABB4C /* RandomNumberProbability.swift in Sources */,

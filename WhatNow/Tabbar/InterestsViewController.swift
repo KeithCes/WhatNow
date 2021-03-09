@@ -40,7 +40,7 @@ class InterestsViewController: UIViewController {
             self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
             
             //grabs all interests of chosen type from backend
-            self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 
                 //choose random interest to use
@@ -96,7 +96,7 @@ class InterestsViewController: UIViewController {
                     let allPreferences = snapshot.value as? NSDictionary
                     self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
                 
-                    self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                         //sets and updates user preferences based on the last thing swiped
                         self.setUserPreferences()
                         //grabs the next random video game
@@ -131,7 +131,7 @@ class InterestsViewController: UIViewController {
                     let allPreferences = snapshot.value as? NSDictionary
                     self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
                     
-                    self.ref.child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
                         self.getAndUpdateValuesAndImage()

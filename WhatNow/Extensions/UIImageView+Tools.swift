@@ -11,7 +11,7 @@ import UIKit
 extension UIView {
     func rotate() {
         let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotation.toValue = NSNumber(value: (Double.pi * 10) + Double.random(in: -6..<6))
+        rotation.toValue = NSNumber(value: (Double.pi * 7) + Double.random(in: -5..<5))
         rotation.duration = 3
         rotation.isCumulative = true
         rotation.repeatCount = Float.greatestFiniteMagnitude
@@ -19,7 +19,7 @@ extension UIView {
     }
     func rotateCounter() {
         let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotation.toValue = NSNumber(value: (Double.pi * -10) + Double.random(in: -6..<6))
+        rotation.toValue = NSNumber(value: (Double.pi * -7) + Double.random(in: -5..<5))
         rotation.duration = 3
         rotation.isCumulative = true
         rotation.repeatCount = Float.greatestFiniteMagnitude

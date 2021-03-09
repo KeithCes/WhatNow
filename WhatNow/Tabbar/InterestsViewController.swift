@@ -32,6 +32,9 @@ class InterestsViewController: UIViewController {
     
     override func viewDidLoad() {
         
+        self.view.backgroundColor = CustomColors.grayDark
+        self.interestsCard.backgroundColor = CustomColors.grayLight
+        
         ref = Database.database().reference()
 
         self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in

@@ -12,6 +12,10 @@ import FirebaseAuth
 
 class SettingsViewController: UIViewController {
     
+    override func viewDidLoad() {
+        self.view.backgroundColor = CustomColors.grayDark
+    }
+    
     @IBAction func logoutPressed(_ sender: Any) {
         try! Auth.auth().signOut()
         

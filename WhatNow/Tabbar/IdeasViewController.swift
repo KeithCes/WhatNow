@@ -10,4 +10,8 @@ import UIKit
 
 class IdeasViewController: UIViewController {
     
+    override func viewDidLoad() {
+        self.view.backgroundColor = CustomColors.grayDark
+    }
+    
 }

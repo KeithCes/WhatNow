@@ -25,22 +25,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-
-    //    let lightGreyColor = UIColor(red: 197/255, green: 205/255, blue: 205/255, alpha: 1.0)
-        let purple = UIColor(red: 148/255, green: 125/255, blue: 162/255, alpha: 1.0)
+        self.view.backgroundColor = CustomColors.grayDark
         
-        emailField.tintColor = purple
-        emailField.textColor = purple
-        emailField.lineColor = purple
-        emailField.selectedTitleColor = purple
-        emailField.selectedLineColor = purple
+        emailField.tintColor = CustomColors.orange
+        emailField.textColor = CustomColors.orange
+        emailField.lineColor = CustomColors.orange
+        emailField.selectedTitleColor = CustomColors.orange
+        emailField.selectedLineColor = CustomColors.orange
         emailField.placeholder = "Email"
         emailField.title = "Email"
         emailField.returnKeyType = UIReturnKeyType.done
         emailField.delegate = self
         emailField.iconType = .font
-        emailField.iconColor = UIColor(red: 148/255, green: 125/255, blue: 162/255, alpha: 1.0)
-        emailField.selectedIconColor = purple
+        emailField.iconColor = CustomColors.orange
+        emailField.selectedIconColor = CustomColors.orange
         emailField.iconFont = UIFont(name: "Font Awesome 5 Free", size: 15)
         emailField.iconText = "\u{f1fa}"
         emailField.iconMarginBottom = 4.0
@@ -50,19 +48,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailField.spellCheckingType = .no
         self.view.addSubview(emailField)
         
-        passField.tintColor = purple
-        passField.textColor = purple
-        passField.lineColor = purple
-        passField.selectedTitleColor = purple
-        passField.selectedLineColor = purple
+        passField.tintColor = CustomColors.orange
+        passField.textColor = CustomColors.orange
+        passField.lineColor = CustomColors.orange
+        passField.selectedTitleColor = CustomColors.orange
+        passField.selectedLineColor = CustomColors.orange
         passField.placeholder = "Password"
         passField.title = "Password"
         passField.isSecureTextEntry = true
         passField.returnKeyType = UIReturnKeyType.done
         passField.delegate = self
         passField.iconType = .font
-        passField.iconColor = UIColor(red: 148/255, green: 125/255, blue: 162/255, alpha: 1.0)
-        passField.selectedIconColor = purple
+        passField.iconColor = CustomColors.orange
+        passField.selectedIconColor = CustomColors.orange
         passField.iconFont = UIFont(name: "Font Awesome 5 Free", size: 15)
         passField.iconText = "\u{f023}"
         passField.iconMarginBottom = 4.0

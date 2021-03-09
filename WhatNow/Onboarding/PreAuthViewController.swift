@@ -15,6 +15,8 @@ class PreAuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = CustomColors.grayDark
+        
         //if user preferences are nil populate here
         let ref = Database.database().reference()
         if let userID = Auth.auth().currentUser?.uid {

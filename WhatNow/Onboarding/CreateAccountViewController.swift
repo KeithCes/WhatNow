@@ -44,6 +44,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         userField.lineColor = CustomColors.orange
         userField.selectedTitleColor = CustomColors.orange
         userField.selectedLineColor = CustomColors.orange
+        userField.placeholderColor = CustomColors.grayLight
         userField.placeholder = "Username"
         userField.title = "Username"
         userField.returnKeyType = UIReturnKeyType.done
@@ -65,6 +66,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         emailField.lineColor = CustomColors.orange
         emailField.selectedTitleColor = CustomColors.orange
         emailField.selectedLineColor = CustomColors.orange
+        emailField.placeholderColor = CustomColors.grayLight
         emailField.placeholder = "Email"
         emailField.title = "Email"
         emailField.returnKeyType = UIReturnKeyType.done
@@ -86,6 +88,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         passField.lineColor = CustomColors.orange
         passField.selectedTitleColor = CustomColors.orange
         passField.selectedLineColor = CustomColors.orange
+        passField.placeholderColor = CustomColors.grayLight
         passField.placeholder = "Password"
         passField.title = "Password"
         passField.isSecureTextEntry = true

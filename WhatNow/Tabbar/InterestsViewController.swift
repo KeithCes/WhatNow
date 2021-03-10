@@ -34,6 +34,10 @@ class InterestsViewController: UIViewController {
         
         self.view.backgroundColor = CustomColors.grayDark
         self.interestsCard.backgroundColor = CustomColors.grayLight
+        self.interestsLabel.textColor = CustomColors.grayDark
+        self.interestsImage.layer.masksToBounds = true
+        self.interestsImage.layer.cornerRadius = 10
+        self.interestsCard.layer.cornerRadius = 10
         
         ref = Database.database().reference()
 

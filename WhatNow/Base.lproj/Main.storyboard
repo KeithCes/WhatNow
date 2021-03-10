@@ -20,7 +20,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="es1-Mo-w57">
                                 <rect key="frame" x="40" y="64" width="334" height="689"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zE9-c1-q7F">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zE9-c1-q7F">
                                         <rect key="frame" x="10" y="10" width="314" height="629"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="___" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUE-7I-Aqb">
@@ -70,14 +70,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qF-M5-i5R" customClass="RoundButtonGrayLight" customModule="WhatNow" customModuleProvider="target">
-                                <rect key="frame" x="188" y="388" width="38" height="30"/>
+                                <rect key="frame" x="100" y="388" width="214" height="30"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="loginPressed:" destination="yXm-ZD-On3" eventType="touchUpInside" id="WSb-Ul-GJt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8J-7A-U9u" customClass="RoundButtonGrayLight" customModule="WhatNow" customModuleProvider="target">
-                                <rect key="frame" x="153.5" y="478" width="107" height="30"/>
+                                <rect key="frame" x="100" y="478" width="214" height="30"/>
                                 <state key="normal" title="Create Account"/>
                                 <connections>
                                     <action selector="createAccountPressed:" destination="yXm-ZD-On3" eventType="touchUpInside" id="acR-21-R3f"/>
@@ -87,7 +87,11 @@
                         <viewLayoutGuide key="safeArea" id="L0Y-kW-sLv"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="L0Y-kW-sLv" firstAttribute="trailing" secondItem="8qF-M5-i5R" secondAttribute="trailing" constant="100" id="94T-s8-ctq"/>
+                            <constraint firstItem="s8J-7A-U9u" firstAttribute="leading" secondItem="L0Y-kW-sLv" secondAttribute="leading" constant="100" id="DZ0-wP-31c"/>
+                            <constraint firstItem="L0Y-kW-sLv" firstAttribute="trailing" secondItem="s8J-7A-U9u" secondAttribute="trailing" constant="100" id="F4k-TM-3FJ"/>
                             <constraint firstItem="8qF-M5-i5R" firstAttribute="centerY" secondItem="Rbe-Yn-l8y" secondAttribute="centerY" constant="-45" id="JZB-ev-qSb"/>
+                            <constraint firstItem="8qF-M5-i5R" firstAttribute="leading" secondItem="L0Y-kW-sLv" secondAttribute="leading" constant="100" id="PvL-Pc-r33"/>
                             <constraint firstItem="8qF-M5-i5R" firstAttribute="centerX" secondItem="Rbe-Yn-l8y" secondAttribute="centerX" id="k3x-t2-CvX"/>
                             <constraint firstItem="s8J-7A-U9u" firstAttribute="centerY" secondItem="Rbe-Yn-l8y" secondAttribute="centerY" constant="45" id="wHQ-UZ-qYT"/>
                             <constraint firstItem="s8J-7A-U9u" firstAttribute="centerX" secondItem="Rbe-Yn-l8y" secondAttribute="centerX" id="zQm-tE-4lx"/>
@@ -107,7 +111,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V29-Zu-0eh" customClass="RoundButtonGrayLight" customModule="WhatNow" customModuleProvider="target">
-                                <rect key="frame" x="50" y="94" width="34" height="30"/>
+                                <rect key="frame" x="50" y="94" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="fL2-5Q-kwI"/>
+                                </constraints>
                                 <state key="normal" title="Back"/>
                                 <connections>
                                     <action selector="backPressed:" destination="rhA-Vg-Nj6" eventType="touchUpInside" id="IaL-u9-aou"/>
@@ -135,7 +142,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KRA-FV-SHu" customClass="RoundButtonGrayLight" customModule="WhatNow" customModuleProvider="target">
-                                <rect key="frame" x="50" y="94" width="34" height="30"/>
+                                <rect key="frame" x="50" y="94" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="8ow-do-6ZA"/>
+                                </constraints>
                                 <state key="normal" title="Back"/>
                                 <connections>
                                     <action selector="backPressed:" destination="yIK-2C-6JF" eventType="touchUpInside" id="Omi-k3-ECI"/>

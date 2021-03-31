@@ -13,6 +13,7 @@
 		53D9706625F7E60E0062D9CD /* RoundButtonGrayLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9706525F7E60E0062D9CD /* RoundButtonGrayLight.swift */; };
 		53D9706E25F7EE8E0062D9CD /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9706D25F7EE8E0062D9CD /* CustomColors.swift */; };
 		53D9707625F7F45A0062D9CD /* UIColor+Hexcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9707525F7F45A0062D9CD /* UIColor+Hexcode.swift */; };
+		53DA58F0261535DA00C21E7E /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 53DA58EF261535DA00C21E7E /* loading.gif */; };
 		53FB6948259D771900CABB4C /* RandomNumberProbability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FB6947259D771900CABB4C /* RandomNumberProbability.swift */; };
 		53FDE71525927D7F00A8384E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE71425927D7F00A8384E /* AppDelegate.swift */; };
 		53FDE71725927D7F00A8384E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FDE71625927D7F00A8384E /* SceneDelegate.swift */; };
@@ -62,6 +63,7 @@
 		53D9706525F7E60E0062D9CD /* RoundButtonGrayLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButtonGrayLight.swift; sourceTree = "<group>"; };
 		53D9706D25F7EE8E0062D9CD /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		53D9707525F7F45A0062D9CD /* UIColor+Hexcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hexcode.swift"; sourceTree = "<group>"; };
+		53DA58EF261535DA00C21E7E /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		53FB6947259D771900CABB4C /* RandomNumberProbability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomNumberProbability.swift; sourceTree = "<group>"; };
 		53FDE71125927D7F00A8384E /* WhatNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53FDE71425927D7F00A8384E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				5306E82F25F5F6F900418537 /* Extensions */,
 				53D9706125F7E5C80062D9CD /* CustomDesigns */,
 				53FDE7A82592AA7B00A8384E /* DefaultPreferencesUser.swift */,
+				53DA58EF261535DA00C21E7E /* loading.gif */,
 				53FDE71A25927D7F00A8384E /* Main.storyboard */,
 				53FDE71D25927D8200A8384E /* Assets.xcassets */,
 				53FDE71425927D7F00A8384E /* AppDelegate.swift */,
@@ -380,6 +383,7 @@
 				53FDE72125927D8200A8384E /* LaunchScreen.storyboard in Resources */,
 				53FDE965259AA12F00A8384E /* FontAwesome.otf in Resources */,
 				53FDE75025927E9C00A8384E /* GoogleService-Info.plist in Resources */,
+				53DA58F0261535DA00C21E7E /* loading.gif in Resources */,
 				53FDE71E25927D8200A8384E /* Assets.xcassets in Resources */,
 				53FDE71C25927D7F00A8384E /* Main.storyboard in Resources */,
 			);

@@ -14,7 +14,7 @@ import FirebaseUI
 
 class InterestsViewController: UIViewController {
     
-    @IBOutlet weak var interestsImage: UIImageView!
+    @IBOutlet weak var interestsImage: SDAnimatedImageView!
     @IBOutlet weak var interestsLabel: UILabel!
     @IBOutlet weak var interestsCard: UIView!
     
@@ -92,6 +92,8 @@ class InterestsViewController: UIViewController {
                 interestsCard.rotate()
                 interestsCard.fadeOut()
                 
+                interestsLabel.text = ""
+                
                 
                 //sets the interests preference based on the previous one before we call the next one
                 var storedInterests: [String:Int]! = self.pastUserPreferences["interests"] as? [String:Int]
@@ -134,6 +136,8 @@ class InterestsViewController: UIViewController {
                 interestsCard.rotateCounter()
                 interestsCard.fadeOut()
                 
+                interestsLabel.text = ""
+                
                 ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
                     let allPreferences = snapshot.value as? NSDictionary
                     self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
@@ -165,9 +169,15 @@ class InterestsViewController: UIViewController {
         //gets image from backend and sets
         let imageName = self.curInterest["imageName"] as! String
         let imageRef = storageRef.child("images/" + self.typeOfInterest + "/" + imageName)
-        let placeholderImage = UIImage(named: "blank")
-        self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage)
-        self.interestsLabel.text = self.curInterest["title"] as? String
+        
+        self.interestsImage.contentMode = .center
+        let placeholderImage = SDAnimatedImage(named: "loading.gif")
+        
+        self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage) {_,_,_,_ in
+            self.interestsImage.contentMode = .scaleToFill
+            self.interestsLabel.text = self.curInterest["title"] as? String
+        }
+       
             
         //sets values to whats game has been pulled
         self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in

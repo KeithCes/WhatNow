@@ -18,13 +18,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="es1-Mo-w57">
-                                <rect key="frame" x="40" y="64" width="334" height="689"/>
+                                <rect key="frame" x="40" y="94" width="334" height="649"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zE9-c1-q7F" customClass="SDAnimatedImageView">
-                                        <rect key="frame" x="10" y="10" width="314" height="629"/>
+                                        <rect key="frame" x="10" y="10" width="314" height="589"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUE-7I-Aqb">
-                                        <rect key="frame" x="167" y="649" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="167" y="609" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -46,8 +46,8 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="es1-Mo-w57" secondAttribute="trailing" constant="40" id="Aug-Xt-lhd"/>
                             <constraint firstItem="es1-Mo-w57" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="Z0C-AC-mzO"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="es1-Mo-w57" secondAttribute="bottom" constant="60" id="aO5-hL-PQv"/>
-                            <constraint firstItem="es1-Mo-w57" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="fyT-53-aPv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="es1-Mo-w57" secondAttribute="bottom" constant="70" id="aO5-hL-PQv"/>
+                            <constraint firstItem="es1-Mo-w57" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="fyT-53-aPv"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Interests" image="scribble.variable" catalog="system" id="gZK-g9-Ua1"/>

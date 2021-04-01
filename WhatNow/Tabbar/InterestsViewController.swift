@@ -111,11 +111,10 @@ class InterestsViewController: UIViewController {
                         //grabs the next random video game
                         let value = snapshot.value as? NSDictionary
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
-                        self.getAndUpdateValuesAndImage()
                         
                         self.interestsCard.layer.removeAllAnimations()
                         
-                        self.interestsCard.fadeIn()
+                        self.getAndUpdateValuesAndImage()
                     })
                 })
                 
@@ -145,11 +144,10 @@ class InterestsViewController: UIViewController {
                     self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
                         self.curInterest = value?.allValues.randomElement() as! [String : Any]
-                        self.getAndUpdateValuesAndImage()
                         
                         self.interestsCard.layer.removeAllAnimations()
                         
-                        self.interestsCard.fadeIn()
+                        self.getAndUpdateValuesAndImage()
                     })
                 })
                 
@@ -175,6 +173,7 @@ class InterestsViewController: UIViewController {
         
         self.interestsImage.sd_setImage(with: imageRef, placeholderImage: placeholderImage) {_,_,_,_ in
             self.interestsImage.contentMode = .scaleToFill
+            self.interestsCard.fadeIn()
             self.interestsLabel.text = self.curInterest["title"] as? String
         }
        

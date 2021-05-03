@@ -23,7 +23,18 @@ class DefaultPreferencesUser {
             "horror": 0,
             "sci-fi": 0,
             "drama": 0,
-            "TEST": 0
+            "puzzle": 0,
+            "platformer": 0,
+            "mmorpg": 0,
+            "rpg": 0,
+            "fighting": 0,
+            "rts": 0,
+            "strategy": 0,
+            "sports": 0,
+            "racing": 0,
+            "party": 0,
+            "battle-royale": 0,
+            "fps": 0
         ],
         "era":
         [

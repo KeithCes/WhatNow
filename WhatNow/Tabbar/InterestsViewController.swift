@@ -26,6 +26,8 @@ class InterestsViewController: UIViewController {
     var curInterest: [String:Any] = [:]
     var totalInterestsSeen: Double! = nil
     
+    var curSeenInterests: [String] = []
+    
     let userID = Auth.auth().currentUser!.uid
     
     var curUserPreferences = DefaultPreferencesUser.defaultPreferences
@@ -100,23 +102,45 @@ class InterestsViewController: UIViewController {
                 storedInterests[self.typeOfInterest] = storedInterests[self.typeOfInterest]! + 1
                 self.curUserPreferences["interests"] = storedInterests
                 
-                //calls the next interest
-                ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
-                    let allPreferences = snapshot.value as? NSDictionary
-                    self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
                 
-                    self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
-                        //sets and updates user preferences based on the last thing swiped
-                        self.setUserPreferences()
-                        //grabs the next random video game
-                        let value = snapshot.value as? NSDictionary
-                        self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                //adds to the seenInterests in the database
+                self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                    var seenInterests = [String]()
+                    seenInterests = snapshot.value as? [String] ?? []
+                    seenInterests.append(self.curInterest["title"] as! String)
+                    self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).setValue(seenInterests)
+                    
+                    //calls the next interest
+                    self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                        let allPreferences = snapshot.value as? NSDictionary
                         
-                        self.interestsCard.layer.removeAllAnimations()
-                        
-                        self.getAndUpdateValuesAndImage()
+                        self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
+
+                        self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            let val = snapshot.value as? NSDictionary
+                            
+                            
+                            //sets the global list of seenInterests (used later to check seenInterests before picking one)
+                            self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                                self.curSeenInterests = snapshot.value as? [String] ?? []
+                                print(self.curSeenInterests)
+                                
+                                //sets and updates user preferences based on the last thing swiped
+                                self.setUserPreferences()
+                                
+                                //grabs the next random video game
+                                let value = val
+                                self.curInterest = self.addKickerToPreferences(userPreferences: allPreferences as! [String : Any], interests: value as! [String : [String:Any]])
+                                
+                                self.interestsCard.layer.removeAllAnimations()
+                                
+                                self.getAndUpdateValuesAndImage()
+                            })
+                        })
                     })
                 })
+                
                 
                 
             case .left:
@@ -137,17 +161,37 @@ class InterestsViewController: UIViewController {
                 
                 interestsLabel.text = ""
                 
-                ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
-                    let allPreferences = snapshot.value as? NSDictionary
-                    self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
+                //adds to the seenInterests in the database
+                self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                    var seenInterests = [String]()
+                    seenInterests = snapshot.value as? [String] ?? []
+                    seenInterests.append(self.curInterest["title"] as! String)
+                    self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).setValue(seenInterests)
                     
-                    self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
-                        let value = snapshot.value as? NSDictionary
-                        self.curInterest = value?.allValues.randomElement() as! [String : Any]
+                    //calls the next interest
+                    self.ref.child("users").child(self.userID).child("preferences").observeSingleEvent(of: .value, with: { (snapshot) in
+                        let allPreferences = snapshot.value as? NSDictionary
                         
-                        self.interestsCard.layer.removeAllAnimations()
-                        
-                        self.getAndUpdateValuesAndImage()
+                        self.typeOfInterest = self.pickInterestType(allInterests: allPreferences?["interests"] as! [String : Int])
+
+                        self.ref.child("allInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            let val = snapshot.value as? NSDictionary
+                            
+                            
+                            //sets the global list of seenInterests (used later to check seenInterests before picking one)
+                            self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).observeSingleEvent(of: .value, with: { (snapshot) in
+                                self.curSeenInterests = snapshot.value as? [String] ?? []
+                                
+                                //grabs the next random video game
+                                let value = val
+                                self.curInterest = self.addKickerToPreferences(userPreferences: allPreferences as! [String : Any], interests: value as! [String : [String:Any]])
+                                
+                                self.interestsCard.layer.removeAllAnimations()
+                                
+                                self.getAndUpdateValuesAndImage()
+                            })
+                        })
                     })
                 })
                 
@@ -277,32 +321,46 @@ class InterestsViewController: UIViewController {
         var allDifferences: [Double] = []
         var allDifferencesTitles: [String] = []
         for interest in interests {
-            let interestName = interest.key
-            let interestData = interest.value
-            var kickedDifference: Double = 0
-            for interestProperty in interestData {
-                //calcs difference for each interest property vs kicked preferences proptery
-                for preferenceProperty in kickedPreferences {
-                    if interestProperty.key == preferenceProperty.key {
-                        let curDifference: Double = abs(interestProperty.value as! Double - preferenceProperty.value)
-                        kickedDifference += curDifference
-                    }
-                }
-                //calcs difference for each nested interest property vs kicked preferences proptery
-                if kickedNestedPreferences[interestProperty.key] != nil {
-                    for nestedPreferenceProperty in kickedNestedPreferences[interestProperty.key]! {
-                        if interestProperty.value as! String == nestedPreferenceProperty.key {
-                            let curDifference: Double = abs(nestedPreferenceProperty.value)
+            
+            //if the interest has already been seen, don't add it to our list (skip it)
+            if !(self.curSeenInterests.contains(interest.value["title"] as? String ?? "")) {
+                let interestName = interest.key
+                let interestData = interest.value
+                var kickedDifference: Double = 0
+                for interestProperty in interestData {
+                    //calcs difference for each interest property vs kicked preferences proptery
+                    for preferenceProperty in kickedPreferences {
+                        if interestProperty.key == preferenceProperty.key {
+                            let curDifference: Double = abs(interestProperty.value as! Double - preferenceProperty.value)
                             kickedDifference += curDifference
                         }
                     }
+                    //calcs difference for each nested interest property vs kicked preferences proptery
+                    if kickedNestedPreferences[interestProperty.key] != nil {
+                        for nestedPreferenceProperty in kickedNestedPreferences[interestProperty.key]! {
+                            if interestProperty.value as! String == nestedPreferenceProperty.key {
+                                let curDifference: Double = abs(nestedPreferenceProperty.value)
+                                kickedDifference += curDifference
+                            }
+                        }
+                    }
                 }
-            }
-            allDifferences.append(kickedDifference)
-            allDifferencesTitles.append(interestName)
+                allDifferences.append(kickedDifference)
+                allDifferencesTitles.append(interestName)
+                    
+                }
         }
-        let minDiff = allDifferences.min()
-        let indMinDiff = allDifferences.firstIndex(of: minDiff!)
-        return interests[allDifferencesTitles[indMinDiff ?? 0]]!
+        
+        //if there are no remaining interests, we remove all interests from the users profile so they can loop back through
+        if allDifferences.count == 0 {
+            self.ref.child("users").child(self.userID).child("seenInterests").child(self.typeOfInterest).removeValue()
+            self.curSeenInterests = []
+            return addKickerToPreferences(userPreferences: userPreferences, interests: interests)
+        }
+        else {
+            let minDiff = allDifferences.min()
+            let indMinDiff = allDifferences.firstIndex(of: minDiff!)
+            return interests[allDifferencesTitles[indMinDiff ?? 0]]!
+        }
     }
 }

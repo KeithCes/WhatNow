@@ -16,6 +16,10 @@ class DefaultPreferencesUser {
         "multiplayer": 5,
         "competitive": 5,
         "radicalness": 5,
+        "seenInterests": [
+            "videogames": [],
+            "movies": []
+        ],
         "genre":
         [
             "adventure": 0,
